@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="inbox my-xl">
+    <div class="content-box">
+
+        {% if received_messages %}
+        <h3 class="inbox__title">New Messages(<span>{{ unread_messages }}</span>)</h3>
+        <ul class="messages">
+
+            {% for received_message in received_messages %}
+            <li class="message {% if not received_message.is_read %} message--unread {% endif %}">
+                <a href="{% url 'message_detail' pk=received_message.id %}">
+                    <span class="message__author">{{ received_message.fullname }}</span>
+                    <span class="message__subject">{{ received_message.subject }}</span>
+                    <span class="message__date">{{ received_message.created|date:"M d, Y, H:m" }}</span>
+                </a>
+            </li>
+            {% endfor  %}
+        </ul>
+        {% else %}
+        <h3 class="text-center">No new messages yet ☹</h3>
+        {% endif %}
+
+    </div>
+</main>
+{% endblock content %}

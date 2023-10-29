@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="singleProject my-md">
+    <div class="container">
+        <div class="layout">
+            <div class="column column--1of3">
+                <h3 class="singleProject__subtitle">Tools & Stacks</h3>
+                <div class="singleProject__toolStack">
+
+                    {% for tag in tags %}
+                    <span class="tag tag--pill tag--sub tag--lg">
+                        <small>{{ tag.name }}</small>
+                    </span>
+                    {% endfor %}
+
+                </div>
+                <a class="singleProject__liveLink" href="#" target="_blank"><i class="im im-external-link"></i>Source
+                    Code
+                </a>
+            </div>
+            <div class="column column--2of3">
+                <img class="singleProject__preview" src="{{ project.image.url }}" alt="portfolio thumbnail"/>
+                <a href="{% url 'profile_detail' pk=project.owner.id %}" class="singleProject__developer">{{ project.owner.fullname }}</a>
+                <h2 class="singleProject__title">{{ project.title }}</h2>
+                <h3 class="singleProject__subtitle">About the Project</h3>
+                <div class="singleProject__info">
+                    {{ project.description }}
+                </div>
+
+                <div class="comments">
+                    <h3 class="singleProject__subtitle">Feedback</h3>
+                    <h5 class="project--rating">
+                        36% Postitive Feedback (18 Votes)
+                    </h5>
+
+                    <form class="form" action="#" method="POST">
+                        <!-- Textarea -->
+                        <div class="form__field">
+                            <label for="formInput#textarea">Comments: </label>
+                            <textarea class="input input--textarea" name="message" id="formInput#textarea"
+                                      placeholder="Write your comments here..."></textarea>
+                        </div>
+                        <input class="btn btn--sub btn--lg" type="submit" value="Comments"/>
+                    </form>
+                    <div class="commentList">
+
+                        {% for comment in comments %}
+                        <div class="comment">
+                                {% if comment.owner.image %}
+                                <a href="{% url 'profile_detail' pk=comment.owner.id %}">
+                                    <img class="avatar avatar--md"
+                                         src="{{ comment.owner.image.url }}"
+                                         alt="{{ comment.owner.fullname }}"/>
+                                </a>
+                                {% else %}
+                                <img class="avatar avatar--md"
+                                     src="{% static 'images/user-default.png' %}"
+                                     alt="Deleted account"/>
+                                {% endif %}
+                            <div class="comment__details">
+                                {% if comment.owner %}
+                                <a href="{% url 'profile_detail' pk=comment.owner.id %}" class="comment__author">{{ comment.owner.fullname }}</a>
+                                {% else %}
+                                <p class="comment__author">Deleted account</p>
+                                {% endif %}
+                                <p class="comment__info">
+                                    {{ comment.body|linebreaksbr }}
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+{% endblock content %}

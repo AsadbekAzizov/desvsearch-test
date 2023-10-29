@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <main class="profile my-md">
+        <div class="container">
+            <div class="layout">
+                <div class="column column--1of3">
+                    <div class="card text-center">
+                        <div class="card__body dev">
+                            {% if profile.image %}
+                                <img class="avatar avatar--xl"
+                                     src="{{ profile.image.url }}"/>
+                            {% else %}
+                                <img class="avatar avatar--xl"
+                                     src="{% static 'images/user-default.png' %}"/>
+                            {% endif %}
+                            <h2 class="dev__name">{{ profile.fullname }}</h2>
+
+                            {% if profile.short_intro %}
+                            <p class="dev__title">{{ profile.short_intro }}</p>
+                            {% endif %}
+
+                            {% if profile.location %}
+                            <p class="dev__location">Based in {{ profile.location }}</p>
+                            {% endif %}
+
+                            <ul class="dev__social">
+
+                                {% if profile.social_github %}
+                                    <li>
+                                        <a title="Github" href="{{ profile.social_github }}" target="_blank">
+                                            <i class="bi bi-github"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% if profile.social_facebook %}
+                                    <li>
+                                        <a title="Facebook" href="{{ profile.social_facebook }}" target="_blank">
+                                            <i class="bi bi-facebook"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% if profile.social_instagram %}
+                                    <li>
+                                        <a title="Instagram" href="{{ profile.social_instagram }}" target="_blank">
+                                            <i class="bi bi-instagram"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% if profile.social_telegram %}
+                                    <li>
+                                        <a title="Telegram" href="{{ profile.social_telegram }}" target="_blank">
+                                            <i class="bi bi-telegram"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% if profile.social_website %}
+                                    <li>
+                                        <a title="Personal Website" href="{{ profile.social_website }}" target="_blank">
+                                            <i class="bi bi-globe"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                            </ul>
+
+                            {% if request.user.profile != profile %}
+                                <a href="{% url 'send_message' pk=profile.id %}" class="btn btn--sub btn--lg">Send Message </a>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="column column--2of3">
+                    <div class="devInfo">
+                        <h3 class="devInfo__title">About Me</h3>
+                        <p class="devInfo__about">
+                            {{ profile.bio|linebreaksbr }}
+                        </p>
+                    </div>
+                    <div class="devInfo">
+                        <h3 class="devInfo__title">Skills</h3>
+                        <div class="devInfo__skills">
+
+                            {% for dev_skill in dev_skills %}
+                                <div class="devSkill">
+                                    <h4 class="devSkill__title">{{ dev_skill.title }}</h4>
+                                    <p class="devSkill__info">
+                                        {{ dev_skill.description|linebreaksbr }}
+                                    </p>
+                                </div>
+                            {% endfor %}
+
+                            <h3 class="devInfo__subtitle">Other Skills</h3>
+                            <div class="devInfo__otherSkills">
+
+                                {% for other_skill in other_skills %}
+                                    <span class="tag tag--pill tag--sub tag--lg">
+                                <small>{{ other_skill.title }}</small>
+                            </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="devInfo">
+                        <h3 class="devInfo__title">Projects</h3>
+                        <div class="grid grid--two">
+
+                            {% for project in projects %}
+                                <div class="column">
+                                    <div class="card project">
+                                        <a href="{% url 'project_detail' pk=project.id %}" class="project" style="width: 100%;">
+                                            <img class="project__thumbnail" src="{{ project.image.url }}"
+                                                 alt="project thumbnail"/>
+                                            <div class="card__body">
+                                                <h3 class="project__title">{{ project.title }}</h3>
+                                                <p><a class="project__author"
+                                                      href="profile.html">By {{ project.owner.fullname }}</a></p>
+                                                <br>
+                                                <div class="project__tags">
+                        <span class="tag tag--pill tag--main">
+                          <small>NextJS</small>
+                        </span>
+                                                    <span class="tag tag--pill tag--main">
+                          <small>GraphQL</small>
+                        </span>
+                                                    <span class="tag tag--pill tag--main">
+                          <small>TypeScript</small>
+                        </span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}
